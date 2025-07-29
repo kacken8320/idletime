@@ -1,0 +1,11 @@
+# build output
+/docker-gs-ping
+
+# editor files
+*.swp
+*.bak
+.DS_Store
+
+# IDE configs
+/.vscode/
+/.idea/
