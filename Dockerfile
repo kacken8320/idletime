@@ -10,6 +10,6 @@ RUN go mod download
 
 COPY *.go ./
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+RUN  go build -o /main
 
-CMD ["/docker-gs-ping"]
+CMD ["/main"]
