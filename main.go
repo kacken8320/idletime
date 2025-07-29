@@ -4,21 +4,29 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"log"
+	"time"
 )
 
 func main() {
-	fmt.Println("sars");
-	connStr := "postgres://user:password@localhost/dbname?sslmode=disable"
+	fmt.Println("sars")
+	connStr := "host=db port=5432 user=user password=password dbname=dbname sslmode=disable"
+
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
 
-	err = db.Ping()
-	if err != nil {
-		panic(err)
+	maxAttempts := 10
+	for attempts := 1; attempts <= maxAttempts; attempts++ {
+		err = db.Ping()
+		if err == nil {
+			break
+		}
+		log.Printf("Attempt %d: Waiting for DB... (%v)", attempts, err)
+		time.Sleep(2 * time.Second)
 	}
 
-	fmt.Println("connected to db");
+	fmt.Println("connected to db")
 }
