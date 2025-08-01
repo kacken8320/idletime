@@ -1,0 +1,29 @@
+USEFLOW:
+	button für "gib mir aktivität" (ggf. in kategorie oder menge von kategorien)
+	-> aktivität ausgewählt für user -> OK drücken (oder SKIP/nächste)
+		-> timer läuft los. bevor min zeit erreicht: zeit läuft normal
+		-> nachdem min zeit erreicht: zeit läuft mit minus davor.
+		-> wenn "done" gedrückt, weil fertig mit aktivität:
+		-> 3 buttons: {"eintragen", "nicht eintragen", "custom wert eintragen"}
+
+WICHTIGE FUNKTION:
+	man kann einfach für jede aktivität zeiten eingeben, falls man keinen vorschlag brauchte,
+	und gerade einfach ins gym gegangen ist ohne app. man kann auch statt eintragen, eine
+	aktivität auswählen, und dann einen timer starten, der dann automatisch eingetragen wird,
+	wenn man auf "DONE" drückt. (da vielleicht wieder die 3 button von oben)
+
+AKTIVITÄTEN NUR IN EINER CATEGORY:
+	ansonsten pure confusion
+	nutzer könnten falsch interpretieren wenn name gleich aber IDs unterschiedlich
+	also müssen nutzer im notfall "Fitness" und "Fitness2" eingeben, damit sie
+	sofort sehen, dass das als 2 verschiedene aktivitäten verrechnet wird.
+
+
+
+SKIP:
+	wenn man skipt kommt bei nächster aktivität meldung: "nicht die nummer 1 priorität, das war [pred]"
+
+SKIP COUNTER:
+	wenn man eine aktivität mehrmals nacheinander ohne sie zu machen skipt (3, 4, 5 mal oder so),
+	kommt ein alert, "du hast jetzt oft geskipt, willst du multiplier anpassen,
+	oder die aktivität entfernen?"
