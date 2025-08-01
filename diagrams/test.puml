@@ -1,0 +1,7 @@
+@startuml
+package "Backend" {
+	[Go App] --> [Postgres]
+}
+actor User
+User --> [Go App]
+@enduml
