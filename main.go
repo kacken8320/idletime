@@ -1,9 +1,9 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5"
 	"log"
 	"time"
 )
@@ -11,16 +11,17 @@ import (
 func main() {
 	fmt.Println("sars")
 	connStr := "host=db port=5432 user=user password=password dbname=dbname sslmode=disable"
+	ctx := context.Background()
 
-	db, err := sql.Open("postgres", connStr)
+	db, err := pgx.Connect(ctx, connStr)
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	defer db.Close(ctx)
 
 	maxAttempts := 10
 	for attempts := 1; attempts <= maxAttempts; attempts++ {
-		err = db.Ping()
+		err = db.Ping(ctx)
 		if err == nil {
 			break
 		}
