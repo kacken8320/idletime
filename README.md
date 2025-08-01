@@ -1,5 +1,6 @@
 # Idletime Docs
 
+We use PlantUML for UML diagrams.
 We only compile locally to avoid bloat, you could've also included it in Docker.
 
 ## PlantUML & Java installation local on Debian
