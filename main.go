@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"log"
+	"github.com/jackc/pgx/v5/pgxpool"
+	_ "log"
+	"os"
 	"time"
+	_ "time"
 )
 
 func main() {
@@ -13,21 +15,30 @@ func main() {
 	connStr := "host=db port=5432 user=user password=password dbname=dbname sslmode=disable"
 	ctx := context.Background()
 
-	db, err := pgx.Connect(ctx, connStr)
+	dbpool, err := pgxpool.New(ctx, connStr)
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close(ctx)
+	defer dbpool.Close()
 
-	maxAttempts := 10
-	for attempts := 1; attempts <= maxAttempts; attempts++ {
-		err = db.Ping(ctx)
+	for {
+		err = dbpool.Ping(ctx)
 		if err == nil {
 			break
 		}
-		log.Printf("Attempt %d: Waiting for DB... (%v)", attempts, err)
-		time.Sleep(2 * time.Second)
+		fmt.Println("Waiting for database to be available...")
+		time.Sleep(2 * time.Second) // Wait before retrying
 	}
+
+	var greeting string
+	err = dbpool.QueryRow(context.Background(), "se"+
+		"lect 'Hello, world!'").Scan(&greeting)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(greeting)
 
 	fmt.Println("connected to db")
 }
