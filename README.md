@@ -4,9 +4,9 @@ We use PlantUML for UML diagrams.
 We only compile locally to avoid bloat, you could've also included it in Docker.
 
 ## PlantUML & Java installation local on Debian
-Run: `sudo apt install plantuml default-jre -y`
+Run: `sudo apt install plantuml default-jre -y`<br>
 Check: `plantuml -version`
 
 ## Compile locally to SVG
-Compile: `plantuml -tsvg diagrams/*.puml`
+Compile: `plantuml -tsvg diagrams/*.puml`<br>
 Alternative flags: use `-tpng` or `-tpdf` instead of `-tsvg` for PNG or PDF, respectively.
