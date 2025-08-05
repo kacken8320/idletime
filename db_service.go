@@ -25,3 +25,11 @@ func CreateActivityTable(pool *pgxpool.Pool) {
 		log.Fatal("Error while creating the table")
 	}
 }
+
+func InsertActivity(pool *pgxpool.Pool, categoryID int, name string, multiplier float64, minTime int, timeSpent int, skipCount int) {
+	_, err := pool.Exec(context.Background(), `INSERT INTO activity (category_id, name, activity_multiplier, minimal_time_in_minutes, time_spent_in_minutes, skip_counter) VALUES ($1, $2, $3, $4, $5, $6);`, categoryID, name, multiplier, minTime, timeSpent, skipCount)
+
+	if err != nil {
+		log.Fatal("ultrasarsinat", err)
+	}
+}

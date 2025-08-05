@@ -41,5 +41,7 @@ func main() {
 
 	fmt.Println("connected to db")
 
-	InitializeDB(dbpool)
+	CreateCategoryTable(dbpool)
+	CreateActivityTable(dbpool)
+	InsertActivity(dbpool, 1, "Sarsen", 1.2, 15, 0, 0)
 }
