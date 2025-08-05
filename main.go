@@ -41,7 +41,8 @@ func main() {
 
 	fmt.Println("connected to db")
 
-	CreateCategoryTable(dbpool)
-	CreateActivityTable(dbpool)
+	InitializeDB(dbpool)
+	InsertCategory(dbpool, "Coroner", 4.8)
 	InsertActivity(dbpool, 1, "Sarsen", 1.2, 15, 0, 0)
+	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(dbpool, 1))
 }
