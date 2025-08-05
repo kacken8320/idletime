@@ -7,7 +7,6 @@ import (
 	_ "log"
 	"os"
 	"time"
-	_ "time"
 )
 
 func main() {
@@ -41,4 +40,6 @@ func main() {
 	fmt.Println(greeting)
 
 	fmt.Println("connected to db")
+
+	InitializeDB(dbpool)
 }
