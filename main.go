@@ -11,12 +11,15 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+var dbpool *pgxpool.Pool
+
 func main() {
 	fmt.Println("sars")
 	connStr := "host=db port=5432 user=user password=password dbname=dbname sslmode=disable"
 	ctx := context.Background()
 
-	dbpool, err := pgxpool.New(ctx, connStr)
+	var err error
+	dbpool, err = pgxpool.New(ctx, connStr)
 	if err != nil {
 		panic(err)
 	}
@@ -42,18 +45,18 @@ func main() {
 	fmt.Println(greeting)
 
 	fmt.Println("connected to db")
-
-	InitializeDB(dbpool)
-	InsertCategory(dbpool, "Coroner", 4.8)
-	InsertCategory(dbpool, "Sers", 9.6)
-	InsertActivity(dbpool, 1, "Sarsen", 1.2, 15, 0, 0)
-	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(dbpool, 1))
-	categories := GetAllCategories(dbpool)
+	InitializeDB()
+	InsertCategory("Coroner", 4.8)
+	InsertCategory("Sers", 9.6)
+	InsertActivity(1, "Sarsen", 1.2, 15, 0, 0)
+	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(1))
+	categories := GetAllCategories()
 	for _, u := range categories {
 		fmt.Println(u.ID, u.Name, u.Multiplier)
 	}
 
 	// healthcheck
 	http.HandleFunc("/healthcheck", healthCheck)
+	http.HandleFunc("/GetAllCategories", ControllerGetAllCategories)
 	http.ListenAndServe(":8320", nil) // starts an http server with a given address and handler
 }
