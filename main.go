@@ -7,6 +7,7 @@ import (
 	_ "log"
 	"os"
 	"time"
+	"net/http"
 )
 
 func main() {
@@ -45,4 +46,9 @@ func main() {
 	InsertCategory(dbpool, "Coroner", 4.8)
 	InsertActivity(dbpool, 1, "Sarsen", 1.2, 15, 0, 0)
 	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(dbpool, 1))
+
+
+	// healthcheck
+	http.HandleFunc("/healthcheck", healthCheck) 
+	http.ListenAndServe(":8320", nil) // starts an http server with a given address and handler
 }
