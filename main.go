@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5/pgxpool"
 	_ "log"
+	"net/http"
 	"os"
 	"time"
-	"net/http"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func main() {
@@ -44,11 +45,15 @@ func main() {
 
 	InitializeDB(dbpool)
 	InsertCategory(dbpool, "Coroner", 4.8)
+	InsertCategory(dbpool, "Sers", 9.6)
 	InsertActivity(dbpool, 1, "Sarsen", 1.2, 15, 0, 0)
 	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(dbpool, 1))
-
+	categories := GetAllCategories(dbpool)
+	for _, u := range categories {
+		fmt.Println(u.ID, u.Name, u.Multiplier)
+	}
 
 	// healthcheck
-	http.HandleFunc("/healthcheck", healthCheck) 
+	http.HandleFunc("/healthcheck", healthCheck)
 	http.ListenAndServe(":8320", nil) // starts an http server with a given address and handler
 }
