@@ -1,21 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"encoding/json"
 	_ "encoding/json"
+	"net/http"
 )
 
 type HealthCheckData struct {
-	Message	string `json:"message"`
+	Message string `json:"message"`
 }
 
-		// return object	data about incoming request
 func healthCheck(w http.ResponseWriter, r *http.Request) {
-	// response code
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-
-	// response body
-	fmt.Fprintln(w, "up")
+	json.NewEncoder(w).Encode(HealthCheckData{Message: "ok"})
 }
-
