@@ -1,8 +1,8 @@
-package main
+package handler
 
 import (
 	"encoding/json"
-	_ "encoding/json"
+	"idletime/internal/db"
 	"log"
 	"net/http"
 )
@@ -12,7 +12,7 @@ func ControllerGetAllCategories(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	err := json.NewEncoder(w).Encode(GetAllCategories())
+	err := json.NewEncoder(w).Encode(db.GetAllCategories())
 	if err != nil {
 		log.Fatal(err)
 	}

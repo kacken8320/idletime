@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	handler2 "idletime/api/handler"
+	"idletime/internal/db"
 	_ "log"
 	"net/http"
 	"os"
@@ -11,22 +13,20 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-var dbpool *pgxpool.Pool
-
 func main() {
 	fmt.Println("sars")
 	connStr := "host=db port=5432 user=user password=password dbname=dbname sslmode=disable"
 	ctx := context.Background()
 
 	var err error
-	dbpool, err = pgxpool.New(ctx, connStr)
+	db.Dbpool, err = pgxpool.New(ctx, connStr)
 	if err != nil {
 		panic(err)
 	}
-	defer dbpool.Close()
+	defer db.Dbpool.Close()
 
 	for {
-		err = dbpool.Ping(ctx)
+		err = db.Dbpool.Ping(ctx)
 		if err == nil {
 			break
 		}
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	var greeting string
-	err = dbpool.QueryRow(context.Background(), "se"+
+	err = db.Dbpool.QueryRow(context.Background(), "se"+
 		"lect 'Hello, world!'").Scan(&greeting)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
@@ -45,18 +45,18 @@ func main() {
 	fmt.Println(greeting)
 
 	fmt.Println("connected to db")
-	InitializeDB()
-	InsertCategory("Coroner", 4.8)
-	InsertCategory("Sers", 9.6)
-	InsertActivity(1, "Sarsen", 1.2, 15, 0, 0)
-	fmt.Printf("Category multiplier is: %v\n", GetCategoryMultiplier(1))
-	categories := GetAllCategories()
+	db.InitializeDB()
+	db.InsertCategory("Coroner", 4.8)
+	db.InsertCategory("Sers", 9.6)
+	db.InsertActivity(1, "Sarsen", 1.2, 15, 0, 0)
+	fmt.Printf("Category multiplier is: %v\n", db.GetCategoryMultiplier(1))
+	categories := db.GetAllCategories()
 	for _, u := range categories {
 		fmt.Println(u.ID, u.Name, u.Multiplier)
 	}
 
 	// healthcheck
-	http.HandleFunc("/healthcheck", healthCheck)
-	http.HandleFunc("/GetAllCategories", ControllerGetAllCategories)
-	http.ListenAndServe(":8320", nil) // starts an http server with a given address and handler
+	http.HandleFunc("/healthcheck", handler2.HealthCheck)
+	http.HandleFunc("/GetAllCategories", handler2.ControllerGetAllCategories)
+	http.ListenAndServe(":8320", nil) // starts an handler server with a given address and handler
 }
