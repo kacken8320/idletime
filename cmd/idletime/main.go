@@ -48,11 +48,16 @@ func main() {
 	db.InitializeDB()
 	db.InsertCategory(1, 0, "Coroner", 4.8, 0, 0, false)
 	db.InsertCategory(2, 0, "Sers", 9.6, 0, 0, false)
+	db.InsertUser("Sarsvid", "Nutte123", "Fetter_fetterspast@8320.org")
 	fmt.Printf("Multiplier is: %v\n", db.GetMultiplier(1))
 	categories := db.GetAllCategories()
 	for _, u := range categories {
 		fmt.Println(u.ID, u.UserID, u.ParentCategoryID, u.Name, u.Multiplier, u.TimeSpentInMins, u.MinimalTimeInMins, u.SkipCounter, u.IsActivity)
+	}
 
+	users := db.GetAllUsers()
+	for _, v := range users {
+		fmt.Println(v.ID, v.Username, v.Password, v.Email)
 	}
 
 	// healthcheck

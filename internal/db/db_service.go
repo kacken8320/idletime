@@ -8,4 +8,5 @@ var Dbpool *pgxpool.Pool
 
 func InitializeDB() {
 	CreateCategoryTable()
+	CreateUsersTable()
 }

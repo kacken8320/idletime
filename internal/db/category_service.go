@@ -14,16 +14,16 @@ type Category struct {
 	Name              string  `db:"name"`
 	Multiplier        float64 `db:"multiplier"`
 	TimeSpentInMins   int     `db:"time_spent_in_mins"`
-	MinimalTimeInMins int     `db:"minimal_time_in_mins"` //only used for activities
-	SkipCounter       int     `db:"skip_counter"`         //only used for activities
+	MinimalTimeInMins int     `db:"minimal_time_in_mins"` //=0 if not an activity
+	SkipCounter       int     `db:"skip_counter"`         //=0 if not an activity
 	IsActivity        bool    `db:"is_activity"`
 }
 
 func CreateCategoryTable() {
 	_, err := Dbpool.Exec(context.Background(),
-		"CREATE TABLE category (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, parent_category_id INTEGER NOT NULL, name TEXT NOT NULL, multiplier FLOAT NOT NULL, time_spent_in_mins INTEGER NOT NULL, minimal_time_in_mins INTEGER NOT NULL, skip_counter INTEGER NOT NULL, is_activity BOOLEAN NOT NULL);")
+		"CREATE TABLE IF NOT EXISTS category (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, parent_category_id INTEGER NOT NULL, name TEXT NOT NULL, multiplier FLOAT NOT NULL, time_spent_in_mins INTEGER NOT NULL, minimal_time_in_mins INTEGER NOT NULL, skip_counter INTEGER NOT NULL, is_activity BOOLEAN NOT NULL);")
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 }
 
@@ -43,12 +43,12 @@ func GetMultiplier(categoryID int) float64 {
 	return Multiplier
 }
 
-func GetAllCategories() []*Category {
+func GetAllCategories() []Category {
 	rows, err := Dbpool.Query(context.Background(), "SELECT id, user_id, parent_category_id, name, multiplier, time_spent_in_mins, minimal_time_in_mins, skip_counter, is_activity FROM category;")
 	if err != nil {
 		log.Fatal(err)
 	}
-	var categories []*Category
+	var categories []Category
 	err = pgxscan.ScanAll(&categories, rows)
 	if err != nil {
 		log.Fatal(err)
