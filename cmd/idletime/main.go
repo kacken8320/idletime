@@ -63,5 +63,6 @@ func main() {
 	// healthcheck
 	http.HandleFunc("/healthcheck", handler2.HealthCheck)
 	http.HandleFunc("/GetAllCategories", handler2.ControllerGetAllCategories)
+	http.HandleFunc("/registerUser", handler2.RegisterUser)
 	http.ListenAndServe(":8320", nil) // starts an handler server with a given address and handler
 }
