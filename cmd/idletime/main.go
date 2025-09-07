@@ -46,13 +46,13 @@ func main() {
 
 	fmt.Println("connected to db")
 	db.InitializeDB()
-	db.InsertCategory("Coroner", 4.8)
-	db.InsertCategory("Sers", 9.6)
-	db.InsertActivity(1, "Sarsen", 1.2, 15, 0, 0)
-	fmt.Printf("Category multiplier is: %v\n", db.GetCategoryMultiplier(1))
+	db.InsertCategory(1, 0, "Coroner", 4.8, 0, 0, false)
+	db.InsertCategory(2, 0, "Sers", 9.6, 0, 0, false)
+	fmt.Printf("Multiplier is: %v\n", db.GetMultiplier(1))
 	categories := db.GetAllCategories()
 	for _, u := range categories {
-		fmt.Println(u.ID, u.Name, u.Multiplier)
+		fmt.Println(u.ID, u.UserID, u.ParentCategoryID, u.Name, u.Multiplier, u.TimeSpentInMins, u.MinimalTimeInMins, u.SkipCounter, u.IsActivity)
+
 	}
 
 	// healthcheck
