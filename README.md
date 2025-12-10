@@ -13,3 +13,7 @@ start shell inside container: `docker exec -it container_name bash`
 log into postgres: `psql dbname -U user`<br>
 (only works on our system as our db name is dbname, see docker-compose.yml)<br>
 see all tables: `\dt`
+
+## godoc
+start godoc on localhost: `godoc -http=:6060`<br>
+url: `localhost:6060/pkg/idletime`
