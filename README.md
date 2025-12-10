@@ -21,3 +21,7 @@ only server:<br>
 - [ ] proper users (sign-in, no security yet)<br>
 - [ ] tlr stuff<br>
 - [ ] think of more to-do stuff<br>
+
+## godoc
+start godoc on localhost: `godoc -http=:6060`<br>
+url: `localhost:6060/pkg/idletime`
