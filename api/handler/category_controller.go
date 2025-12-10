@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+// Receives an HTTP-request and forwards it to the responsible service. Returns a JSON of all categories.
+//
+// This function is only called from the browser or frontend (for testing maybe from curl or something).
 func ControllerGetAllCategories(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
