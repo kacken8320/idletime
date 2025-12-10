@@ -7,6 +7,10 @@ import (
 	"log"
 )
 
+// We initially called this "register" instead of "add" because.
+//
+// This function receives an HTTP-request and forwards it to the responsible service.
+// Lacks a lot of error handling.
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var u db.User;
 	
