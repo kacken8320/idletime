@@ -6,6 +6,7 @@ import (
 
 var Dbpool *pgxpool.Pool
 
+// Calls the functions for creating the category table and Users table.
 func InitializeDB() {
 	CreateCategoryTable()
 	CreateUsersTable()

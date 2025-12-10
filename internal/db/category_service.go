@@ -19,6 +19,9 @@ type Category struct {
 	IsActivity        bool    `db:"is_activity"`
 }
 
+// Creates the category table in the database.
+//
+// Should only be called once after starating the database the first time.
 func CreateCategoryTable() {
 	_, err := Dbpool.Exec(context.Background(),
 		"CREATE TABLE IF NOT EXISTS category (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, parent_category_id INTEGER NOT NULL, name TEXT NOT NULL, multiplier FLOAT NOT NULL, time_spent_in_mins INTEGER NOT NULL, minimal_time_in_mins INTEGER NOT NULL, skip_counter INTEGER NOT NULL, is_activity BOOLEAN NOT NULL);")
@@ -27,13 +30,17 @@ func CreateCategoryTable() {
 	}
 }
 
-func InsertCategory(userID int, parentCategoryID int, name string, multiplier float64, timeSpentInMins int, minimalTimeInMins int, isActivity bool) {
-	_, err := Dbpool.Exec(context.Background(), "INSERT INTO category (user_id, parent_category_id, name, multiplier, time_spent_in_mins, minimal_time_in_mins, skip_counter, is_activity) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", userID, parentCategoryID, name, multiplier, 0, timeSpentInMins, minimalTimeInMins, isActivity)
+// Inserts a category or activity into the category table.
+//
+// TimeSpentInMins and SkipCounter do not have to be passed to the function, as they are always 0 when creating a new category.
+func InsertCategory(userID int, parentCategoryID int, name string, multiplier float64, minimalTimeInMins int, isActivity bool) {
+	_, err := Dbpool.Exec(context.Background(), "INSERT INTO category (user_id, parent_category_id, name, multiplier, time_spent_in_mins, minimal_time_in_mins, skip_counter, is_activity) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", userID, parentCategoryID, name, multiplier, 0, 0, minimalTimeInMins, isActivity)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
+// Queries the database for the category multiplier and returns it.
 func GetMultiplier(categoryID int) float64 {
 	var Multiplier float64
 	err := Dbpool.QueryRow(context.Background(), "SELECT multiplier FROM category WHERE id = $1", categoryID).Scan(&Multiplier)
@@ -43,6 +50,9 @@ func GetMultiplier(categoryID int) float64 {
 	return Multiplier
 }
 
+// Queries the database for all categories.
+//
+// Returns an array of categories of type Category
 func GetAllCategories() []Category {
 	rows, err := Dbpool.Query(context.Background(), "SELECT id, user_id, parent_category_id, name, multiplier, time_spent_in_mins, minimal_time_in_mins, skip_counter, is_activity FROM category;")
 	if err != nil {

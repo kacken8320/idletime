@@ -14,6 +14,9 @@ type User struct {
 	Email    string `db:"email"`
 }
 
+// Creates the user table in the database.
+//
+// Should only be called once after starating the database the first time.
 func CreateUsersTable() {
 	_, err := Dbpool.Exec(context.Background(), "CREATE EXTENSION IF NOT EXISTS citext;")
 	if err != nil {
@@ -26,6 +29,7 @@ func CreateUsersTable() {
 	}
 }
 
+// Inserts a user into the database.
 func InsertUser(username string, password string, email string) {
 	_, err := Dbpool.Exec(context.Background(),
 		"INSERT INTO users (username, password, email) VALUES ($1, $2, $3);", username, password, email)
@@ -34,6 +38,9 @@ func InsertUser(username string, password string, email string) {
 	}
 }
 
+// Queries the database for all users.
+//
+// Returns an array of users of type User
 func GetAllUsers() []User {
 	rows, err := Dbpool.Query(context.Background(), "SELECT id, username, password, email FROM users;")
 	if err != nil {

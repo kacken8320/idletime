@@ -46,8 +46,8 @@ func main() {
 
 	fmt.Println("connected to db")
 	db.InitializeDB()
-	db.InsertCategory(1, 0, "Coroner", 4.8, 0, 0, false)
-	db.InsertCategory(2, 0, "Sers", 9.6, 0, 0, false)
+	db.InsertCategory(1, 0, "Coroner", 4.8, 0, false)
+	db.InsertCategory(2, 0, "Sers", 9.6, 0, false)
 	db.InsertUser("Sarsvid", "Nutte123", "Fetter_fetterspast@8320.org")
 	fmt.Printf("Multiplier is: %v\n", db.GetMultiplier(1))
 	categories := db.GetAllCategories()
